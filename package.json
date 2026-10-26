@@ -27,15 +27,15 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@astrojs/check": "0.9.10",
-    "@types/node": "24.13.3",
-    "eslint": "10.9.1",
+    "@astrojs/check": "0.9.12",
+    "@types/node": "24.19.2",
+    "eslint": "10.13.0",
     "eslint-plugin-astro": "1.7.0",
-    "globals": "17.12.0",
-    "prettier": "3.9.6",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
     "prettier-plugin-astro": "0.14.1",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.69.0",
-    "vitest": "4.1.11"
+    "typescript-eslint": "8.72.0",
+    "vitest": "4.1.12"
   }
 }
