@@ -1,5 +1,5 @@
 {
-  "name": "@nextbridge/event-support",
+  "name": "@gomdori/event-support",
   "version": "0.1.0",
   "private": true,
   "type": "module",

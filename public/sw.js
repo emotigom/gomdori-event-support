@@ -1,4 +1,5 @@
-const CACHE_PREFIX = "nextbridge-event-support-";
+const CACHE_PREFIX = "gomdori-event-support-";
+const LEGACY_CACHE_PREFIX = "nextbridge-event-support-";
 const CACHE_VERSION = "v4";
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 const APP_ROOT = new URL("./", self.location.href).href;
@@ -48,7 +49,8 @@ self.addEventListener("activate", (event) => {
       .then((keys) =>
         Promise.all(
           keys
-            .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+            .filter((key) => (key.startsWith(CACHE_PREFIX) || key.startsWith(LEGACY_CACHE_PREFIX)) &&
+              key !== CACHE_NAME)
             .map((key) => caches.delete(key))
         )
       )

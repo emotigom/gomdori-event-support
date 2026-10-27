@@ -26,7 +26,7 @@ describe("PWA structure", () => {
   it("precaches only core event pages for weak venue connectivity", async () => {
     const worker = await readFile(new URL("../public/sw.js", import.meta.url), "utf8");
 
-    expect(worker).toContain('const CACHE_PREFIX = "nextbridge-event-support-"');
+    expect(worker).toContain('const CACHE_PREFIX = "gomdori-event-support-"');
     expect(worker).toContain('const CACHE_VERSION = "v4"');
     for (const route of ['""', '"schedule/"', '"rooms/"', '"visit/"']) {
       expect(worker).toContain(route);
@@ -38,10 +38,11 @@ describe("PWA structure", () => {
     expect(worker).toContain('"Cache-Control": "no-store"');
   });
 
-  it("deletes only stale Nextbridge caches on the shared GitHub Pages origin", async () => {
+  it("deletes only stale Gomdori and legacy event caches on the shared GitHub Pages origin", async () => {
     const worker = await readFile(new URL("../public/sw.js", import.meta.url), "utf8");
 
-    expect(worker).toContain("key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME");
+    expect(worker).toContain("key.startsWith(CACHE_PREFIX) || key.startsWith(LEGACY_CACHE_PREFIX)");
+    expect(worker).toContain("key !== CACHE_NAME");
     expect(worker).not.toContain("keys.filter((key) => key !== CACHE_NAME)");
   });
 

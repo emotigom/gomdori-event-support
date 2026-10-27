@@ -30,7 +30,7 @@ Supabase 기반은 실제 프로젝트에 배포했고, Cloudflare 고정 주소
 
 비밀값은 GitHub, 소스 코드, 채팅에 붙여 넣지 말고 Supabase Dashboard의 **Edge Functions → Secrets**에만 입력합니다.
 
-1. Discord에서 비공개 `Nextbridge 알림` 채널을 만들고, 채널 설정 → 연동 → Webhooks에서 Incoming Webhook을 생성합니다.
+1. Discord에서 비공개 `Gomdori 알림` 채널을 만들고, 채널 설정 → 연동 → Webhooks에서 Incoming Webhook을 생성합니다.
 2. Resend에 가입해 발신 도메인을 추가합니다. 권장 발신 주소는 `questions@notify.gomdory.com`이며, Resend가 안내하는 DNS 레코드를 Cloudflare에 추가해 도메인을 인증합니다.
 3. Resend에서 API key를 만들고, Supabase Secrets에 아래 값을 설정합니다.
 
@@ -40,7 +40,7 @@ Supabase 기반은 실제 프로젝트에 배포했고, Cloudflare 고정 주소
 | `DISCORD_WEBHOOK_URL`               | Discord Incoming Webhook URL                |
 | `PARTICIPANT_NOTIFICATION_PROVIDER` | `email`                                     |
 | `RESEND_API_KEY`                    | Resend API key                              |
-| `RESEND_FROM_EMAIL`                 | `Nextbridge <questions@notify.gomdory.com>` |
+| `RESEND_FROM_EMAIL`                 | `Gomdori <questions@notify.gomdory.com>` |
 
 4. Secret 저장 뒤, 접수 개방 전 시험 질문 한 건으로 Discord 수신과 답변 완료 이메일을 모두 확인합니다.
 

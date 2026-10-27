@@ -12,7 +12,7 @@ export const event2026Sk = eventConfigSchema.parse({
     ko: "2026 경기 성취평가 표준화 평가도구 개발 합숙 워크숍"
   },
   organizer: { ko: "경기도교육청 중등교육과" },
-  operator: { ko: "Nextbridge" },
+  operator: { ko: "Gomdori" },
   dates: {
     start: "2026-08-28",
     end: "2026-08-30",
