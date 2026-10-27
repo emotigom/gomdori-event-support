@@ -1,4 +1,4 @@
-# Nextbridge 행사 현장지원
+# Gomdori 행사 현장지원
 
 교사가 휴대전화에서 일정, 등록부 서명 시간, 교과별 협의실, 오시는 길과 현장 질문을 빠르게 확인하는 행사별 정적 웹앱입니다. 프런트는 Astro로 GitHub Pages에 배포하고, 질문·답변은 Supabase Edge Functions를 유일한 공개 API 경계로 사용하도록 설계했습니다.
 
