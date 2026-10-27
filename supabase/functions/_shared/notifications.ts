@@ -121,7 +121,7 @@ async function sendOperatorNotification(
 ): Promise<DeliveryResult> {
   const channel = notificationChannelFromEnv("OPERATOR_NOTIFICATION_PROVIDER");
   const text =
-    "[Nextbridge] 새 질문 " +
+    "[Gomdori] 새 질문 " +
     notification.receiptCode +
     " · " +
     notification.category +
@@ -146,7 +146,7 @@ async function sendOperatorNotification(
       if (!recipients) return { channel, status: "failed", errorCode: "INVALID_RECIPIENTS" };
       const result = await sendResendEmail({
         to: recipients,
-        subject: "[Nextbridge] 새 질문이 접수되었습니다",
+        subject: "[Gomdori] 새 질문이 접수되었습니다",
         text
       });
       return { channel, status: result.sent ? "sent" : "failed", errorCode: result.errorCode };
@@ -207,7 +207,7 @@ async function sendParticipantNotification(
       }
       const result = await sendResendEmail({
         to: notification.contactValue,
-        subject: "[Nextbridge] 답변이 완료되었습니다",
+        subject: "[Gomdori] 답변이 완료되었습니다",
         text: message
       });
       return { channel, status: result.sent ? "sent" : "failed", errorCode: result.errorCode };
