@@ -1,0 +1,67 @@
+name: QR and Pages live audit (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Probe public URLs, recording the final HTTP destination
+        shell: bash
+        run: |
+          set -u
+          # Keep checking other URLs even if one curl request cannot connect.
+          set +e
+          failures=0
+          expected_event='https://emotigom.github.io/gomdori-event-support/'
+          echo '## Read-only Gomdori public-link audit' >> "$GITHUB_STEP_SUMMARY"
+          echo '| Route | HTTP | Final URL | Redirect count | TLS |' >> "$GITHUB_STEP_SUMMARY"
+          echo '| --- | --- | --- | --- | --- |' >> "$GITHUB_STEP_SUMMARY"
+          urls=(
+            'new-event|https://emotigom.github.io/gomdori-event-support/'
+            'new-admin|https://emotigom.github.io/gomdori-event-support/admin/'
+            'qr-no-slash|https://go.gomdory.com/2026-sk'
+            'qr-slash|https://go.gomdory.com/2026-sk/'
+            'old-event|https://emotigom.github.io/nextbridge/'
+            'new-classroom|https://emotigom.github.io/gomdori-classroom-kit/go/workshop/'
+            'old-classroom|https://emotigom.github.io/nextbridge-classroom-kit/go/workshop/'
+          )
+          for record in "${urls[@]}"; do
+            label="${record%%|*}"
+            url="${record#*|}"
+            result=$(curl --silent --show-error --location --max-redirs 8 --connect-timeout 10 --max-time 22 --output /dev/null --write-out '%{http_code}|%{url_effective}|%{num_redirects}|%{ssl_verify_result}' "$url" 2>&1)
+            curl_exit=$?
+            IFS='|' read -r http final redirects tls <<< "$result"
+            echo "RESULT label=$label curl_exit=$curl_exit http=$http final=$final redirects=$redirects tls=$tls"
+            echo "| $label | $http | $final | $redirects | $tls |" >> "$GITHUB_STEP_SUMMARY"
+            case "$label" in
+              qr-*)
+                if [ "$curl_exit" -ne 0 ] || [ "$http" != '200' ] || [ "$final" != "$expected_event" ] || [ "$tls" != '0' ] || [ "${redirects:-0}" -lt 1 ]; then
+                  echo "::error::Broken QR route $label: it must redirect with verified TLS to $expected_event and return HTTP 200."
+                  failures=$((failures + 1))
+                fi
+                ;;
+              new-event|new-admin|new-classroom)
+                if [ "$curl_exit" -ne 0 ] || [ "$http" != '200' ] || [ "$tls" != '0' ]; then
+                  echo "::error::Required public page failed: $label"
+                  failures=$((failures + 1))
+                fi
+                ;;
+              old-*)
+                if [ "$http" = '404' ]; then
+                  echo "::notice::Legacy project Pages route $label is still 404; a separate compatibility host is required if printed direct QR links exist."
+                fi
+                ;;
+            esac
+          done
+          echo 'This audit reads only public URL responses. It does not test authenticated login, participant data, or mobile QR scanning.' >> "$GITHUB_STEP_SUMMARY"
+          if [ "$failures" -gt 0 ]; then
+            echo "::error::$failures required public URL(s) failed their migration checks."
+            exit 1
+          fi
+          echo 'All required public links passed. Legacy direct URLs may still need separate hosting.' >> "$GITHUB_STEP_SUMMARY"
