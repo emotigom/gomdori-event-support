@@ -1,0 +1,49 @@
+name: One-shot read-only archived API preflight verification
+
+on:
+  push:
+    branches:
+      - ops/archived-api-preflight-2026-10-31
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check deployed Edge Function CORS without touching participant records
+        shell: bash
+        run: |
+          set -uo pipefail
+          base='https://cwxxhzfppvkuqvmmhgiq.supabase.co/functions/v1'
+          origin='https://emotigom.github.io'
+          failures=0
+          for name in question-status admin-questions; do
+            for allowed in yes no; do
+              if [ "$allowed" = yes ]; then check_origin="$origin"; want=204; else check_origin='https://example.invalid'; want=403; fi
+              headers=$(mktemp)
+              status=$(curl -sS --connect-timeout 12 --max-time 24 -X OPTIONS \
+                -H "Origin: $check_origin" \
+                -H 'Access-Control-Request-Method: POST' \
+                -H 'Access-Control-Request-Headers: content-type' \
+                -o /dev/null -D "$headers" -w '%{http_code}' "$base/$name") || status='000'
+              echo "RESULT endpoint=$name allowed=$allowed status=$status expected=$want"
+              if [ "$status" != "$want" ]; then failures=$((failures+1)); fi
+              if [ "$allowed" = yes ] && ! grep -iq '^access-control-allow-origin: https://emotigom.github.io' "$headers"; then
+                echo "::error::Expected allowed origin response header missing for $name"
+                failures=$((failures+1))
+              fi
+              if [ "$allowed" = no ] && grep -iq '^access-control-allow-origin:' "$headers"; then
+                echo "::error::Unexpected third-party origin permitted for $name"
+                failures=$((failures+1))
+              fi
+              rm -f "$headers"
+            done
+          done
+          if [ "$failures" -gt 0 ]; then
+            echo "::error::Preflight checks failed ($failures). No participant records were queried."
+            exit 1
+          fi
+          echo 'Preflight checks passed (allowed origin 204 / denied origin 403). No participant records were queried.'
