@@ -2,6 +2,8 @@
 
 Supabase 기반은 실제 프로젝트에 배포했고, Cloudflare 고정 주소와 QR 실기기 검증을 완료했습니다. 운영 기간에는 운영자 Discord와 참가자 이메일 알림을 사용했으며, 현재는 새 질문 접수를 종료하고 기존 답변 조회만 유지합니다.
 
+> **2026-10-31 최신 점검:** 아래의 2026년 8월 연결·배포 기록은 **당시의 역사적 상태**입니다. [공개 DNS 진단](https://github.com/emotigom/gomdori-event-support/actions/runs/41180687037) 결과, 이전에 사용한 Supabase 호스트는 현재 NXDOMAIN이며 실제 운영 질문 조회/로그인 기능은 확인되지 않았습니다. 데이터가 삭제됐다고 단정할 수는 없습니다. 소유 계정에서의 프로젝트 상태 확인과 복구 절차는 [별도 가이드](archived-backend-dns-recovery.md)를 먼저 따르세요.
+
 ## 2026-10-31 — GitHub Pages 이름 변경 점검
 
 저장소는 `emotigom/gomdori-event-support`로 이름이 변경되었고 CI/Pages 빌드 경로도 `/gomdori-event-support/`입니다. 위 목록의 `https://emotigom.github.io/nextbridge/admin/`는 **행사 운영 당시 확인된 과거 Auth 반환 주소**입니다.
