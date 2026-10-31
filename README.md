@@ -8,7 +8,7 @@
 
 - 행사물에서 추출한 청록·파랑·민트 색상과 제목 위계, 반응형 레이아웃
 - 3일 일정, 날짜별 등록부 서명 시간, 교과별 협의실 검색, 오시는 길·준비물, 공지·FAQ
-- JavaScript가 없어도 읽을 수 있는 핵심 일정과 GitHub Pages `/nextbridge` 하위 경로 대응
+- JavaScript가 없어도 읽을 수 있는 핵심 일정과 GitHub Pages의 현재 저장소 이름에 맞춘 하위 경로 대응
 - PWA manifest와 같은 출처의 정적 파일만 캐시하는 서비스 워커
 - 익명 질문 폼, 접수번호/비공개 링크 조회 화면, 운영진 화면의 정보 구조
 - Supabase 스키마·RLS·권한 철회 migration과 배포된 제출/조회/운영진 Edge Function
@@ -50,7 +50,7 @@ npm run verify
 ## 배포와 QR 상태
 
 - `main`에 병합되면 Pages workflow가 검증 후 `dist`를 배포합니다.
-- GitHub Pages 빌드는 `/nextbridge`, 최종 짧은 도메인 빌드는 `/`를 기준으로 합니다.
+- GitHub Actions의 Pages 빌드는 현재 저장소 이름(`github.event.repository.name`)을 하위 경로로 사용합니다. 예전 `/nextbridge`는 별도 호환 경로가 필요하며 GitHub Pages가 자동 리디렉션하지 않습니다. 최종 짧은 도메인 빌드는 `/`를 사용합니다.
 - Supabase `nextbridge-prod`는 서울 리전에 생성되어 있으며 업무 테이블 6개와 Edge Function 3개가 배포되었습니다. 공개 publishable 값과 Turnstile도 Pages 빌드에 연결했고 실제 휴대전화 종단 시험을 통과했습니다. 프런트는 `archived`, 데이터베이스의 `2026-sk.is_active`는 `false`이며 기존 답변 조회만 유지합니다.
 - 고정 주소 `https://go.gomdory.com/2026-sk`의 proxied DNS와 `302` 리디렉션을 활성화했고, QR 생성·해독·휴대전화 카메라 검증을 마쳐 QR 상태는 `verified`입니다. 최종 인쇄 승인 전이므로 아직 `active`는 아닙니다.
 - 이 고정 리디렉션에는 상태 확인이나 자동 fallback이 없습니다. 기존 `nextbridge-classroom-kit`의 `program-03`는 같은 GitHub Pages를 사용하므로 가용성 fallback이 아니라 이미 인쇄된 구형 QR의 호환 경로로만 유지합니다.
