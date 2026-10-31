@@ -1,0 +1,38 @@
+name: Read-only QR and Pages link audit
+
+on:
+  push:
+    branches:
+      - ops/qr-link-verify-2026-10-31
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Probe public endpoints without changing external services
+        shell: bash
+        run: |
+          set -u
+          echo "Read-only public URL audit; no cookies, tokens, credentials or user data."
+          urls=(
+            'new-event|https://emotigom.github.io/gomdori-event-support/'
+            'new-admin|https://emotigom.github.io/gomdori-event-support/admin/'
+            'qr-no-slash|https://go.gomdory.com/2026-sk'
+            'qr-slash|https://go.gomdory.com/2026-sk/'
+            'old-event|https://emotigom.github.io/nextbridge/'
+            'new-classroom|https://emotigom.github.io/gomdori-classroom-kit/go/workshop/'
+            'old-classroom|https://emotigom.github.io/nextbridge-classroom-kit/go/workshop/'
+          )
+          for record in "${urls[@]}"; do
+            name="${record%%|*}"
+            url="${record#*|}"
+            result=$(curl --silent --show-error --location --max-redirs 8 --connect-timeout 10 --max-time 22 --output /dev/null --write-out '%{http_code}|%{url_effective}|%{num_redirects}|%{ssl_verify_result}|%{content_type}' "$url" 2>&1)
+            code=$?
+            echo "RESULT name=${name} curl_exit=${code} data=${result}"
+          done
+          echo "Audit complete. No DNS, redirects, Supabase, or Cloudflare configuration changed."
