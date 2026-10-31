@@ -21,6 +21,12 @@ Historical project-related names have separate meanings:
 
 Do not confuse the CLI identifier, dashboard name, and actual Supabase project ref. Do not assume renaming GitHub changed any hosted Supabase identity.
 
+## Official Supabase recovery window — conditional, not an incident diagnosis
+
+[Supabase Free Plan Project Pausing](https://supabase.com/docs/guides/platform/free-project-pausing) states that projects with insufficient user database activity over 7 days may be paused and that paused projects can usually be **resumed in Supabase Studio for up to 90 days after the pause**, retaining prior data and configuration on a successful resume. If that limit has elapsed, the documented [downloaded-backup local recovery](https://supabase.com/docs/guides/local-development/restoring-downloaded-backup) may be relevant depending on what backups remain. The original event's actual billing plan, pause date and recovery eligibility have **not** been confirmed.
+
+Do not infer that any NXDOMAIN is automatically a paused Free project, or that this project's data remains retrievable. Confirm original owner access, project reference, the dashboard's real status and any official recovery window before making a change.
+
 ## Owner-side checks (read-only first)
 
 1. Open the Supabase dashboard, use **Switch organization** as needed, and find the original project by **project ref** `cwxxhzfppvkuqvmmhgiq` or historical display name `nextbridge-prod`. The currently connected Supabase account does not show the original event project; do not disclose unrelated project names.
