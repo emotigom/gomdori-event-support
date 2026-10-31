@@ -2,7 +2,7 @@
 
 교사가 휴대전화에서 일정, 등록부 서명 시간, 교과별 협의실, 오시는 길과 현장 질문을 빠르게 확인하는 행사별 정적 웹앱입니다. 프런트는 Astro로 GitHub Pages에 배포하고, 질문·답변은 Supabase Edge Functions를 유일한 공개 API 경계로 사용하도록 설계했습니다.
 
-현재 저장소에는 행사 프런트와 질문·답변 서버 경계가 구현되어 있습니다. 전용 Supabase `nextbridge-prod` 프로젝트에 스키마와 세 Edge Function을 배포했고, 승인된 owner 멤버십·허용 출처·Turnstile·공개 빌드 변수도 연결했습니다. owner의 비밀번호 설정과 첫 로그인, 실제 휴대전화 질문 종단 시험, Cloudflare 고정 주소의 HTTPS 리디렉션, QR 휴대전화 카메라 검증까지 완료했습니다. 2026년 8월 28일 질문 접수를 종료해 프런트는 `archived`, 데이터베이스 행사는 `is_active = false`입니다. 기존 질문·답변과 접수번호·비공개 링크 조회는 유지합니다.
+현재 저장소에는 행사 프런트와 질문·답변 서버 경계가 구현되어 있습니다. 전용 Supabase `nextbridge-prod` 프로젝트에 스키마와 세 Edge Function을 배포했고, 승인된 owner 멤버십·허용 출처·Turnstile·공개 빌드 변수도 연결했습니다. owner의 비밀번호 설정과 첫 로그인, 실제 휴대전화 질문 종단 시험, Cloudflare 고정 주소의 HTTPS 리디렉션, QR 휴대전화 카메라 검증까지 완료했습니다. 2026년 8월 28일 질문 접수를 종료해 프런트는 `archived`, 데이터베이스 행사는 `is_active = false`입니다. 당시에는 기존 질문·답변과 접수번호·비공개 링크 조회를 유지했지만, 2026-10-31 점검에서는 과거 Supabase 호스트의 DNS 오류로 조회 기능의 정상 작동을 확인할 수 없습니다.
 
 ## 현재 구현 범위
 
@@ -51,7 +51,7 @@ npm run verify
 
 - 새 GitHub Pages 행사 사이트와 기존 Cloudflare QR 고정 주소는 HTTP 200 응답으로 연결되며, 행사 표시 상태는 계속 `archived`입니다.
 - **과거 질문·답변 조회 API는 연결 문제가 확인되었습니다.** GitHub Actions 공개 DNS 검사에서 기존 Supabase 프로젝트 호스트가 NXDOMAIN을 반환했습니다. 관리자 화면 HTML이 열린다는 사실만으로 로그인·기존 답변 조회가 정상이라는 뜻은 아닙니다.
-- 기존 질문 데이터의 보존 또는 복구 가능 여부는 확인되지 않았습니다. [복구 확인 가이드](docs/archived-backend-dns-recovery.md)와 [추적 이슈 #70](https://github.com/emotigom/gomdori-event-support/issues/70)를 참고하세요. 복구 전 새 질문 접수를 열거나 비공개 기록을 공개 저장소에 제출하지 않습니다.
+- 기존 질문 데이터의 보존 또는 복구 가능 여부는 확인되지 않았습니다. [복구 확인 가이드](docs/archived-backend-dns-recovery.md), [Supabase 종료·백업 체크리스트](docs/supabase-retirement-checklist.md)와 [추적 이슈 #70](https://github.com/emotigom/gomdori-event-support/issues/70)를 참고하세요. 복구 전 새 질문 접수를 열거나 비공개 기록을 공개 저장소에 제출하지 않습니다.
 
 ## 배포와 QR 상태
 
@@ -76,6 +76,7 @@ npm run verify
 - [현장 운영 가이드](docs/operations.md)
 - [QR·도메인 전환](docs/qr-cutover.md)
 - [외부 연결 체크리스트](docs/external-setup.md)
+- [Supabase 프로젝트 종료·백업 체크리스트](docs/supabase-retirement-checklist.md)
 
 ## 라이선스
 
