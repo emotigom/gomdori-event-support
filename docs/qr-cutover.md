@@ -1,5 +1,12 @@
 # QR·도메인 전환 계획
 
+## 2026-10-31 — GitHub 저장소 이름 변경 후 재검증 필요
+
+- 새 저장소는 `emotigom/gomdori-event-support`이며 새 프로젝트 Pages 경로는 `https://emotigom.github.io/gomdori-event-support/`입니다. 새 GitHub Pages 배포 작업은 성공했으나 이 문서 작성 시점에 **외부 HTTPS 접근·휴대전화 QR 테스트는 재검증하지 못했습니다**.
+- 아래의 `nextbridge-2026-sk` Cloudflare 규칙과 이전 `/nextbridge/` 목적지는 **2026-08-28에 확인한 과거 설정 기록**입니다. 규칙이 자동으로 새 프로젝트 경로로 바뀌지는 않습니다.
+- Cloudflare **Rules → Redirect Rules → Single Redirects**에서 기존 `/2026-sk` 및 `/2026-sk/`의 대상 URL을 새 Pages 경로로 업데이트하고 302 정책을 유지한 뒤, iOS/Android 실제 QR과 기존 상태조회 딥링크를 확인해야 합니다. 별도 이전 URL 호환 페이지가 없으면 원래 `github.io/nextbridge/`로 접근하는 사용자도 보호되지 않습니다.
+- Supabase Auth 반환 주소, Edge Functions `ALLOWED_ORIGINS`의 실제 배포 환경, Turnstile 호스트와 로그인·조회 기능은 별도 확인합니다. **질문 접수는 다시 열지 않습니다.** Cloudflare DNS, Supabase Secrets 또는 기존 암호화 네임스페이스를 문자열 치환하지 않습니다.
+
 ## 주소 원칙
 
 인쇄 QR은 GitHub Pages의 실제 호스팅 주소에 고정하지 않습니다. Cloudflare가 관리하는 짧은 주소를 영구 진입점으로 두고, 현재 배포 위치로 임시 리디렉션합니다. GitHub Pages에서 다른 호스팅으로 옮겨도 QR 이미지를 다시 인쇄하지 않는 구조입니다.

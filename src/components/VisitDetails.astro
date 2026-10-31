@@ -18,8 +18,9 @@ const kakaoDirectionsUrl =
   `https://map.kakao.com/link/to/${venueLabel},${venueLatitude},${venueLongitude}`;
 const tmapDrivingUrl =
   `tmap://route?goalname=${venueLabel}&goalx=${venueLongitude}&goaly=${venueLatitude}`;
+const naverAppName = encodeURIComponent(new URL(import.meta.env.BASE_URL, Astro.site ?? Astro.url.origin).toString());
 const naverTransitUrl =
-  `nmap://route/public?dlat=${venueLatitude}&dlng=${venueLongitude}&dname=${venueNavigationLabel}&appname=https%3A%2F%2Femotigom.github.io%2Fnextbridge`;
+  `nmap://route/public?dlat=${venueLatitude}&dlng=${venueLongitude}&dname=${venueNavigationLabel}&appname=${naverAppName}`;
 const naverMapUrl = `https://map.naver.com/p/search/${venueQuery}`;
 ---
 

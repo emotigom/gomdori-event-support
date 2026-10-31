@@ -9,6 +9,7 @@ describe("Dependabot deployment chain", () => {
 
     expect(workflow).toContain('"repos/$REPOSITORY/pulls/$PR_NUMBER/merge"');
     expect(workflow).toContain('"repos/$REPOSITORY/actions/workflows/pages.yml/dispatches"');
+    expect(workflow).toContain("github.repository == 'emotigom/gomdori-event-support'");
     expect(workflow).toContain("-f merge_method=squash");
     expect(workflow).toContain('-f sha="$HEAD_SHA"');
     expect(workflow).toContain("-f ref=main");

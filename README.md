@@ -29,7 +29,7 @@ GitHub Pages와 같은 하위 경로 빌드를 검증하려면 다음을 실행�
 
 ```bash
 ASTRO_TELEMETRY_DISABLED=1 \
-ASTRO_BASE_PATH=/nextbridge \
+ASTRO_BASE_PATH=/gomdori-event-support \
 ASTRO_SITE_URL=https://emotigom.github.io \
 npm run verify
 ```
@@ -49,11 +49,14 @@ npm run verify
 
 ## 배포와 QR 상태
 
+> **2026-10-31 이름 변경:** Pages 프로젝트 경로는 `/gomdori-event-support/`입니다. 이전 인쇄 QR과 Cloudflare Redirect가 예전 `/nextbridge/` 주소를 참조할 수 있으므로 실제 목적지·HTTPS·휴대전화 테스트를 다시 통과하기 전에는 정상 전환을 주장하지 않습니다. 기존 행사의 `archived` 상태는 유지합니다.
+
+
 - `main`에 병합되면 Pages workflow가 검증 후 `dist`를 배포합니다.
 - GitHub Actions의 Pages 빌드는 현재 저장소 이름(`github.event.repository.name`)을 하위 경로로 사용합니다. 예전 `/nextbridge`는 별도 호환 경로가 필요하며 GitHub Pages가 자동 리디렉션하지 않습니다. 최종 짧은 도메인 빌드는 `/`를 사용합니다.
 - Supabase `nextbridge-prod`는 서울 리전에 생성되어 있으며 업무 테이블 6개와 Edge Function 3개가 배포되었습니다. 공개 publishable 값과 Turnstile도 Pages 빌드에 연결했고 실제 휴대전화 종단 시험을 통과했습니다. 프런트는 `archived`, 데이터베이스의 `2026-sk.is_active`는 `false`이며 기존 답변 조회만 유지합니다.
 - 고정 주소 `https://go.gomdory.com/2026-sk`의 proxied DNS와 `302` 리디렉션을 활성화했고, QR 생성·해독·휴대전화 카메라 검증을 마쳐 QR 상태는 `verified`입니다. 최종 인쇄 승인 전이므로 아직 `active`는 아닙니다.
-- 이 고정 리디렉션에는 상태 확인이나 자동 fallback이 없습니다. 기존 `nextbridge-classroom-kit`의 `program-03`는 같은 GitHub Pages를 사용하므로 가용성 fallback이 아니라 이미 인쇄된 구형 QR의 호환 경로로만 유지합니다.
+- 이 고정 리디렉션에는 상태 확인이나 자동 fallback이 없습니다. 이름 변경 전 `nextbridge-classroom-kit`에서 제공했던 `program-03`는 같은 GitHub Pages를 사용하므로 가용성 fallback이 아니라 이미 인쇄된 구형 QR의 호환 경로로만 유지합니다.
 
 `ready`는 콘텐츠·배포·API·권한 점검을 통과했지만 참가자 접수는 열지 않은 상태입니다. 실제 개방은 행사 당일 운영자가 로그인 가능한 것을 확인한 뒤 프런트를 `published`로 배포하고 데이터베이스의 `is_active`를 `true`로 바꾸는 명시적인 두 단계로만 수행합니다.
 

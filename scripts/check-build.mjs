@@ -32,7 +32,7 @@ const builtHtml = await htmlFiles(dist);
 for (const file of builtHtml) {
   const html = await readFile(file, "utf8");
   const repositorySlug = process.env.GITHUB_REPOSITORY?.split("/")[1];
-  const base = process.env.ASTRO_BASE_PATH ?? `/${repositorySlug || "nextbridge"}`;
+  const base = process.env.ASTRO_BASE_PATH ?? `/${repositorySlug || "gomdori-event-support"}`;
   const expectedBase = base.replace(/\/+$/, "") || "/";
   for (const [, assetPath] of html.matchAll(/(?:href|src)="(\/[^"]*)"/g)) {
     if (assetPath.startsWith("//")) continue;
