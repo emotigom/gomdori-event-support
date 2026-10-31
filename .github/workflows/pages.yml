@@ -32,7 +32,7 @@ jobs:
       - name: Verify and build
         env:
           ASTRO_TELEMETRY_DISABLED: 1
-          ASTRO_BASE_PATH: /nextbridge
+          ASTRO_BASE_PATH: /${{ github.event.repository.name }}
           ASTRO_SITE_URL: https://emotigom.github.io
           PUBLIC_SUPABASE_URL: https://cwxxhzfppvkuqvmmhgiq.supabase.co
           PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_i3z38Xk7C2giiZPELGA5aw_FQGdzOw7

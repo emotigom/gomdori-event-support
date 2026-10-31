@@ -31,9 +31,14 @@ async function htmlFiles(directory) {
 const builtHtml = await htmlFiles(dist);
 for (const file of builtHtml) {
   const html = await readFile(file, "utf8");
-  const rootAsset = /(?:href|src)="\/(?!nextbridge\/|\/)/;
-  if (rootAsset.test(html)) {
-    throw new Error("Root-relative asset escapes the GitHub Pages base path: " + file);
+  const repositorySlug = process.env.GITHUB_REPOSITORY?.split("/")[1];
+  const base = process.env.ASTRO_BASE_PATH ?? `/${repositorySlug || "nextbridge"}`;
+  const expectedBase = base.replace(/\/+$/, "") || "/";
+  for (const [, assetPath] of html.matchAll(/(?:href|src)="(\/[^"]*)"/g)) {
+    if (assetPath.startsWith("//")) continue;
+    if (expectedBase !== "/" && assetPath !== expectedBase && !assetPath.startsWith(`${expectedBase}/`)) {
+      throw new Error(`Root-relative asset escapes GitHub Pages base ${expectedBase}: ${file}: ${assetPath}`);
+    }
   }
   if (!html.includes('lang="ko"')) {
     throw new Error("Missing Korean document language: " + file);
