@@ -1,0 +1,43 @@
+name: One-shot Cloudflare QR cutover verification
+
+on:
+  push:
+    branches: [ops/qr-verify-after-cloudflare-2026-10-31]
+
+permissions:
+  contents: read
+
+jobs:
+  check-redirect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Check new Pages and both QR routes over HTTPS
+        shell: bash
+        run: |
+          set -u
+          failures=0
+          expected='https://emotigom.github.io/gomdori-event-support/'
+          for record in \
+            'event|https://emotigom.github.io/gomdori-event-support/' \
+            'admin|https://emotigom.github.io/gomdori-event-support/admin/' \
+            'qr|https://go.gomdory.com/2026-sk' \
+            'qr-slash|https://go.gomdory.com/2026-sk/' \
+            'classroom|https://emotigom.github.io/gomdori-classroom-kit/go/workshop/'
+          do
+            label="${record%%|*}"
+            url="${record#*|}"
+            output=$(curl -sSL --show-error --max-redirs 8 --connect-timeout 10 --max-time 22 --output /dev/null --write-out '%{http_code}|%{url_effective}|%{num_redirects}|%{ssl_verify_result}' "$url" 2>&1)
+            code=$?
+            IFS='|' read -r http final redirects tls <<< "$output"
+            echo "RESULT label=${label} curl_exit=${code} http=${http} final=${final} redirects=${redirects} tls=${tls}"
+            if [ "$code" != 0 ] || [ "$http" != 200 ] || [ "$tls" != 0 ]; then failures=$((failures+1)); fi
+            if [ "$label" = qr ] || [ "$label" = qr-slash ]; then
+              if [ "$final" != "$expected" ] || [ "${redirects:-0}" -lt 1 ]; then failures=$((failures+1)); fi
+            fi
+          done
+          if [ "$failures" -ne 0 ]; then
+            echo "::error::Cloudflare QR cutover did not pass all public URL checks"
+            exit 1
+          fi
+          echo 'QR /2026-sk and /2026-sk/ both end at new GitHub Pages HTTP 200 with verified TLS.'
