@@ -21,7 +21,7 @@ jobs:
   safe-update:
     if: >-
       github.event.pull_request.user.login == 'dependabot[bot]' &&
-      github.repository == 'emotigom/nextbridge' &&
+      github.repository == 'emotigom/gomdori-event-support' &&
       github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     timeout-minutes: 15
