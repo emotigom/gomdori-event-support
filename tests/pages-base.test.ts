@@ -17,5 +17,7 @@ describe("GitHub Pages repository rename compatibility", () => {
     expect(checker).toContain('process.env.GITHUB_REPOSITORY?.split("/")[1]');
     expect(checker).toContain('assetPath.startsWith(`${expectedBase}/`)');
     expect(checker).not.toContain("nextbridge\\/|\\/");
+    expect(config).toContain('repositorySlug || "gomdori-event-support"');
+    expect(checker).toContain('repositorySlug || "gomdori-event-support"');
   });
 });

@@ -2,6 +2,15 @@
 
 Supabase 기반은 실제 프로젝트에 배포했고, Cloudflare 고정 주소와 QR 실기기 검증을 완료했습니다. 운영 기간에는 운영자 Discord와 참가자 이메일 알림을 사용했으며, 현재는 새 질문 접수를 종료하고 기존 답변 조회만 유지합니다.
 
+## 2026-10-31 — GitHub Pages 이름 변경 점검
+
+저장소는 `emotigom/gomdori-event-support`로 이름이 변경되었고 CI/Pages 빌드 경로도 `/gomdori-event-support/`입니다. 위 목록의 `https://emotigom.github.io/nextbridge/admin/`는 **행사 운영 당시 확인된 과거 Auth 반환 주소**입니다.
+
+- Supabase Auth URL Configuration에서 새 관리자 반환 주소 `https://emotigom.github.io/gomdori-event-support/admin/`의 허용 여부를 확인합니다. 원래 허용 주소는 필요한 호환성을 검증하기 전까지 임의 삭제하지 않습니다.
+- Supabase Edge Functions의 `ALLOWED_ORIGINS`는 **출처(origin) 단위**이므로 두 Pages 경로가 같은 `https://emotigom.github.io` origin을 사용한다면 단순 저장소 이름 변경만으로 추가 origin이 필요하지 않습니다. 그러나 실제 운영 환경의 허용 출처를 확인해야 합니다.
+- Cloudflare Redirect 대상, Turnstile 설정, 질문/운영진 조회, 현재 행사 `archived` 및 `is_active=false` 유지는 확인 전제로 둡니다. 새 질문 접수를 열지 않습니다.
+- 기존 `nextbridge-prod`는 실제 Supabase 프로젝트 식별자이므로 이름 변경하지 않습니다. Secrets/비공개 참여 자료는 Git 또는 이 문서에 추가하지 않습니다.
+
 ## 현재 상태
 
 - Supabase 조직: `emotigom's Org` (Free)
