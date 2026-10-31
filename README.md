@@ -47,6 +47,12 @@ npm run verify
 
 한국어를 기본값으로 두되 모든 행사 표시는 `{ ko, en? }` 구조를 사용해 영문 전환을 확장할 수 있습니다.
 
+## 운영 상태 점검 — 2026-10-31
+
+- 새 GitHub Pages 행사 사이트와 기존 Cloudflare QR 고정 주소는 HTTP 200 응답으로 연결되며, 행사 표시 상태는 계속 `archived`입니다.
+- **과거 질문·답변 조회 API는 연결 문제가 확인되었습니다.** GitHub Actions 공개 DNS 검사에서 기존 Supabase 프로젝트 호스트가 NXDOMAIN을 반환했습니다. 관리자 화면 HTML이 열린다는 사실만으로 로그인·기존 답변 조회가 정상이라는 뜻은 아닙니다.
+- 기존 질문 데이터의 보존 또는 복구 가능 여부는 확인되지 않았습니다. [복구 확인 가이드](docs/archived-backend-dns-recovery.md)와 [추적 이슈 #70](https://github.com/emotigom/gomdori-event-support/issues/70)를 참고하세요. 복구 전 새 질문 접수를 열거나 비공개 기록을 공개 저장소에 제출하지 않습니다.
+
 ## 배포와 QR 상태
 
 > **2026-10-31 이름 변경:** Pages 프로젝트 경로는 `/gomdori-event-support/`입니다. 이전 인쇄 QR과 Cloudflare Redirect가 예전 `/nextbridge/` 주소를 참조할 수 있으므로 실제 목적지·HTTPS·휴대전화 테스트를 다시 통과하기 전에는 정상 전환을 주장하지 않습니다. 기존 행사의 `archived` 상태는 유지합니다.
