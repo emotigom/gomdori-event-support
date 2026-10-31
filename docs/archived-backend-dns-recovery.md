@@ -23,9 +23,9 @@ Do not confuse the CLI identifier, dashboard name, and actual Supabase project r
 
 ## Official Supabase recovery window — conditional, not an incident diagnosis
 
-[Supabase Free Plan Project Pausing](https://supabase.com/docs/guides/platform/free-project-pausing) states that projects with insufficient user database activity over 7 days may be paused and that paused projects can usually be **resumed in Supabase Studio for up to 90 days after the pause**, retaining prior data and configuration on a successful resume. If that limit has elapsed, the documented [downloaded-backup local recovery](https://supabase.com/docs/guides/local-development/restoring-downloaded-backup) may be relevant depending on what backups remain. The original event's actual billing plan, pause date and recovery eligibility have **not** been confirmed.
+[Supabase Free Plan Project Pausing](https://supabase.com/docs/guides/platform/free-project-pausing) states that projects with insufficient user database activity over 7 days may be paused and that paused projects can usually be **resumed in Supabase Studio for up to one year after the pause**, retaining prior data and configuration on a successful resume. If that limit has elapsed, the documented [downloaded-backup local recovery](https://supabase.com/docs/guides/local-development/restoring-downloaded-backup) may be relevant depending on what backups remain. The original event's actual billing plan, pause date and recovery eligibility have **not** been confirmed.
 
-Do not infer that any NXDOMAIN is automatically a paused Free project, or that this project's data remains retrievable. Confirm original owner access, project reference, the dashboard's real status and any official recovery window before making a change.
+**Documentation update:** Older Supabase guidance and an August 2026 advance-warning email referred to 90 days; the [current project-pausing guide](https://supabase.com/docs/guides/platform/free-project-pausing) says one year. No actual pause date or entitlement has been confirmed. Do not infer that any NXDOMAIN is automatically a paused Free project, or that this project's data remains retrievable. Confirm original owner access, project reference, the dashboard's real status and any official recovery window before making a change.
 
 ## Owner-side checks (read-only first)
 
@@ -49,4 +49,4 @@ Avoid: posting or searching user receipts; attempting unauthorized record querie
 - [Historical external setup](external-setup.md)
 - [QR cutover details](qr-cutover.md)
 
-**The outstanding decision is project ownership/recovery, not a QR or GitHub repository routing change.**
+**The outstanding decision is project ownership/recovery and the retention or retirement of private records, not a QR or GitHub repository routing change.** See [the retirement checklist](supabase-retirement-checklist.md).
